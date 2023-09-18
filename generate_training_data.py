@@ -159,13 +159,13 @@ def generate_correlations_parallel(model, rbins, halocat):
             # ( ed_3d, (sat_coords, sat_orientations, coords, rbins), {"period":halocat.Lbox} ),
             # ( ee_3d, (sat_coords, sat_orientations, coords, orientations, rbins), {"period":halocat.Lbox} ),
 
-            # ( tpcf, (cen_coords, rbins, sat_coords), {"period":halocat.Lbox} ),
-            # ( ed_3d, (cen_coords, cen_orientations, sat_coords, rbins), {"period":halocat.Lbox} ),
-            # ( ee_3d, (cen_coords, cen_orientations, sat_coords, sat_orientations, rbins), {"period":halocat.Lbox} ),
+            ( tpcf, (cen_coords, rbins, sat_coords), {"period":halocat.Lbox} ),
+            ( ed_3d, (cen_coords, cen_orientations, sat_coords, rbins), {"period":halocat.Lbox} ),
+            ( ee_3d, (cen_coords, cen_orientations, sat_coords, sat_orientations, rbins), {"period":halocat.Lbox} ),
 
-            # ( tpcf, (sat_coords, rbins, cen_coords), {"period":halocat.Lbox} ),
-            # ( ed_3d, (sat_coords, sat_orientations, cen_coords, rbins), {"period":halocat.Lbox} ),
-            # ( ee_3d, (sat_coords, sat_orientations, cen_coords, cen_orientations, rbins), {"period":halocat.Lbox} )
+            ( tpcf, (sat_coords, rbins, cen_coords), {"period":halocat.Lbox} ),
+            ( ed_3d, (sat_coords, sat_orientations, cen_coords, rbins), {"period":halocat.Lbox} ),
+            ( ee_3d, (sat_coords, sat_orientations, cen_coords, cen_orientations, rbins), {"period":halocat.Lbox} )
             ]
     
     with mp.Pool() as pool:
@@ -337,6 +337,7 @@ satellite_alignment_gamma = -0.029
 #rbins = np.logspace(-1,1.2,15)
 #rbins = np.logspace(-1,1.8,29)
 rbin_centers = (rbins[:-1]+rbins[1:])/2.0
+print(len(rbin_centers))
 
 # Satellite bins
 sat_bins = np.logspace(10.5, 15.2, 15)
