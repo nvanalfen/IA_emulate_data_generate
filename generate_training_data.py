@@ -40,10 +40,6 @@ def read_variables():
 
     # TODO: Set/Retrieve lists of alignment parameters to loop through
     parameters = np.load(param_file, allow_pickle=True).item()
-    cen_mus = parameters["cen_mus"]
-    if not job is None:
-        # TODO: Select subset of cen_mus
-        cen_mus["cen_mus"] = cen_mus
 
     parameters["job"] = job
     parameters["max_jobs"] = max_jobs
