@@ -282,10 +282,10 @@ def generate_training_data_complex(model, rbins, model_param_dict, halocat, inne
         start = (job-1)*span
         end = start+span
 
-    i = 0
+    ind = 0
     for value in values[start:end]:
-        print(f"Value set {i}")
-        i += 1
+        print(f"Value set {ind}")
+        ind += 1
 
         # Adjust model parameters
         for i in range(len(keys)):
