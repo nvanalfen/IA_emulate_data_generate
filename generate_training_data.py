@@ -373,7 +373,7 @@ if generate:
     # Generate data
     # inputs, outputs = generate_training_data(model, rbins, cen_mus, sat_params, halocat, inner_runs=inner_runs, 
     #                                          constant=constant)
-    inputs, outputs = generate_training_data_complex(model, rbins, param_dict, halocat, inner_runs=10, 
+    inputs, outputs = generate_training_data_complex(model, rbins, param_dict, halocat, inner_runs=inner_runs, 
                                                      job=job, max_jobs=max_jobs)
 
     # Save data, making sure to account for if this is a parallelized script
