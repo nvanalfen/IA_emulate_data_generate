@@ -283,6 +283,7 @@ def generate_training_data_complex(model, rbins, model_param_dict, halocat, inne
         end = start+span
 
     ind = 0
+    inner_start = time.time()
     for value in values[start:end]:
         print(f"Value set {ind}")
         ind += 1
@@ -300,6 +301,8 @@ def generate_training_data_complex(model, rbins, model_param_dict, halocat, inne
             # Append input and output row
             inputs.append( input_row )
             outputs.append( generate_correlations_parallel(model, rbins, halocat) )
+
+        print(time.time()-inner_start)
 
     return keys, np.array(inputs), np.array(outputs)
 
