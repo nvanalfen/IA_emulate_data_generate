@@ -293,14 +293,17 @@ def generate_training_data_complex(model, rbins, model_param_dict, halocat, inne
                 model.param_dict[keys[i]] = value[i]
 
         for run in range(inner_runs):
-            input_row = list(value)
-            
-            # Repopulate model
-            model.mock.populate()
+            try:
+                input_row = list(value)
+                
+                # Repopulate model
+                model.mock.populate()
 
-            # Append input and output row
-            inputs.append( input_row )
-            outputs.append( generate_correlations_parallel(model, rbins, halocat) )
+                # Append input and output row
+                inputs.append( input_row )
+                outputs.append( generate_correlations_parallel(model, rbins, halocat) )
+            except:
+                print(f"Failed on {str(value)}")
 
         print(time.time()-inner_start)
 
