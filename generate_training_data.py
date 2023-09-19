@@ -159,13 +159,13 @@ def generate_correlations_parallel(model, rbins, halocat):
             # ( ed_3d, (sat_coords, sat_orientations, coords, rbins), {"period":halocat.Lbox} ),
             # ( ee_3d, (sat_coords, sat_orientations, coords, orientations, rbins), {"period":halocat.Lbox} ),
 
-            ( tpcf, (cen_coords, rbins, sat_coords), {"period":halocat.Lbox} ),
-            ( ed_3d, (cen_coords, cen_orientations, sat_coords, rbins), {"period":halocat.Lbox} ),
-            ( ee_3d, (cen_coords, cen_orientations, sat_coords, sat_orientations, rbins), {"period":halocat.Lbox} ),
+            # ( tpcf, (cen_coords, rbins, sat_coords), {"period":halocat.Lbox} ),
+            # ( ed_3d, (cen_coords, cen_orientations, sat_coords, rbins), {"period":halocat.Lbox} ),
+            # ( ee_3d, (cen_coords, cen_orientations, sat_coords, sat_orientations, rbins), {"period":halocat.Lbox} ),
 
-            ( tpcf, (sat_coords, rbins, cen_coords), {"period":halocat.Lbox} ),
-            ( ed_3d, (sat_coords, sat_orientations, cen_coords, rbins), {"period":halocat.Lbox} ),
-            ( ee_3d, (sat_coords, sat_orientations, cen_coords, cen_orientations, rbins), {"period":halocat.Lbox} )
+            # ( tpcf, (sat_coords, rbins, cen_coords), {"period":halocat.Lbox} ),
+            # ( ed_3d, (sat_coords, sat_orientations, cen_coords, rbins), {"period":halocat.Lbox} ),
+            # ( ee_3d, (sat_coords, sat_orientations, cen_coords, cen_orientations, rbins), {"period":halocat.Lbox} )
             ]
     
     with mp.Pool() as pool:
@@ -356,8 +356,8 @@ mask_bad_halocat(halocat)
 ############################################################################################################################
 
 param_dict = {
-    "central_alignment_strength":[-1.,-0.5,0,0.5,1.],
-    "satellite_alignment_strength":[-1.,-0.5,0,0.5,1.],
+    "central_alignment_strength":[-1.,-0.6,-0.3,0,0.3,0.6,1.],
+    "satellite_alignment_strength":[-1.,-0.6,-0.3,0,0.3,0.6,1.],
     "logMmin":[12.0, 12.5, 13.0],
     "sigma_logM":[0.22, 0.26, 0.3],
     "logM0":[12.3, 12.6, 12.9],
@@ -381,7 +381,7 @@ if generate:
                                                      job=job, max_jobs=max_jobs)
 
     # Save data, making sure to account for if this is a parallelized script
-    suffix = ("constant" if constant else "distance_dependent") + (str(job) if not job is None else "")
+    suffix = ("constant" if constant else "distance_dependent") + "_" + catalog + ("_"+str(job) if not job is None else "")
     #suffix += f"_bins_{rbins[0]}_{rbins[-1]}_{len(rbins)}_inner_loops_{inner_runs}"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
