@@ -309,6 +309,42 @@ def generate_training_data_complex(model, rbins, model_param_dict, halocat, inne
 
     return keys, np.array(inputs), np.array(outputs)
 
+def generate_training_data_random(model, rbins, model_param_dict, halocat, inner_runs=100, save_every=10, output_dir="data", suffix=""):
+    inputs = []
+    outputs = []
+
+    ind = 0
+    inner_start = time.time()
+    for i in range(inner_runs):
+        print(f"Value set {ind}")
+        ind += 1
+
+        # Adjust model parameters
+        input_row = []
+        for key in model_param_dict.keys():
+                val = np.random.uniform( model_param_dict[key][0], model_param_dict[key][1])
+                model.param_dict[keys] = val
+                input_row.append(val)
+
+        for run in range(inner_runs):
+            try:                
+                # Repopulate model
+                model.mock.populate()
+
+                # Append input and output row
+                inputs.append( input_row )
+                outputs.append( generate_correlations_parallel(model, rbins, halocat) )
+
+                if i%save_every == 0:
+                    np.save( os.path.join( output_dir, f"inputs_{suffix}.npy" ), inputs)
+                    np.save( os.path.join( output_dir, f"outputs_{suffix}.npy" ), outputs)
+            except:
+                print(f"Failed on {str(input_row)}")
+
+        print(time.time()-inner_start)
+
+    return np.array(inputs), np.array(outputs)
+
 def permute_params(param_dict):
     keys = [ key for key in param_dict.keys() ]
     values = list( itertools.product( *[ param_dict[key] for key in keys ] ) )
@@ -368,10 +404,25 @@ param_dict = {
     "alpha":[0.5, 1.0, 1.5]
 }
 
+param_ranges = {
+    "central_alignment_strength":[-1.,1.],
+    "satellite_alignment_strength":[-1.,1.],
+    "logMmin":[12.0,13.0],
+    "sigma_logM":[0.2,0.3],
+    "logM0":[12.,13.],
+    "logM1":[13.,14.],
+    "alpha":[0.5,1.5]
+}
+output_dir = "random_range_data"
+
 generate = True
 start = time.time()
 
 if generate:
+
+    suffix = ("constant" if constant else "distance_dependent") + "_" + catalog + ("_"+str(job) if not job is None else "")
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
     # Build model instance
     model = build_model_instance(central_alignment_strength, (satellite_alignment_a, satellite_alignment_gamma), sat_bins, 
@@ -380,14 +431,15 @@ if generate:
     # Generate data
     # inputs, outputs = generate_training_data(model, rbins, cen_mus, sat_params, halocat, inner_runs=inner_runs, 
     #                                          constant=constant)
-    keys, inputs, outputs = generate_training_data_complex(model, rbins, param_dict, halocat, inner_runs=inner_runs, 
-                                                     job=job, max_jobs=max_jobs)
+    # keys, inputs, outputs = generate_training_data_complex(model, rbins, param_dict, halocat, inner_runs=inner_runs, 
+    #                                                  job=job, max_jobs=max_jobs)
+    
+    inputs, outputs = generate_training_data_random(model, rbins, param_ranges, halocat, inner_runs=200, 
+                                                     save_every=5, output_dir=output_dir, suffix=suffix)
 
     # Save data, making sure to account for if this is a parallelized script
-    suffix = ("constant" if constant else "distance_dependent") + "_" + catalog + ("_"+str(job) if not job is None else "")
+    #suffix = ("constant" if constant else "distance_dependent") + "_" + catalog + ("_"+str(job) if not job is None else "")
     #suffix += f"_bins_{rbins[0]}_{rbins[-1]}_{len(rbins)}_inner_loops_{inner_runs}"
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
     np.save( os.path.join( output_dir, f"inputs_{suffix}.npy" ), inputs)
     np.save( os.path.join( output_dir, f"outputs_{suffix}.npy" ), outputs)
 
