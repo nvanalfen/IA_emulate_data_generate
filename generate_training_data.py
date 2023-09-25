@@ -323,7 +323,7 @@ def generate_training_data_random(model, rbins, model_param_dict, halocat, inner
         input_row = []
         for key in model_param_dict.keys():
                 val = np.random.uniform( model_param_dict[key][0], model_param_dict[key][1])
-                model.param_dict[keys] = val
+                model.param_dict[key] = val
                 input_row.append(val)
 
         for run in range(inner_runs):
