@@ -316,7 +316,7 @@ def generate_training_data_random(model, rbins, model_param_dict, halocat, inner
     ind = 0
     inner_start = time.time()
     for i in range(inner_runs):
-        print(f"Value set {ind}")
+        print(f"Run {ind}")
         ind += 1
 
         # Adjust model parameters
@@ -326,20 +326,19 @@ def generate_training_data_random(model, rbins, model_param_dict, halocat, inner
                 model.param_dict[key] = val
                 input_row.append(val)
 
-        for run in range(inner_runs):
-            try:                
-                # Repopulate model
-                model.mock.populate()
+        try:                
+            # Repopulate model
+            model.mock.populate()
 
-                # Append input and output row
-                inputs.append( input_row )
-                outputs.append( generate_correlations_parallel(model, rbins, halocat) )
+            # Append input and output row
+            inputs.append( input_row )
+            outputs.append( generate_correlations_parallel(model, rbins, halocat) )
 
-                if i%save_every == 0:
-                    np.save( os.path.join( output_dir, f"inputs_{suffix}.npy" ), inputs)
-                    np.save( os.path.join( output_dir, f"outputs_{suffix}.npy" ), outputs)
-            except:
-                print(f"Failed on {str(input_row)}")
+            if i%save_every == 0:
+                np.save( os.path.join( output_dir, f"inputs_{suffix}.npy" ), inputs)
+                np.save( os.path.join( output_dir, f"outputs_{suffix}.npy" ), outputs)
+        except:
+            print(f"Failed on {str(input_row)}")
 
         print(time.time()-inner_start)
 
