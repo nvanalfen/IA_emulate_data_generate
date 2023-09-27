@@ -209,8 +209,8 @@ hypercube_path = sys.argv[3]
 ############################################################################################################################
 inner_runs = 1
 constant = True
-#catalog = "bolplanck"
-catalog = "multidark"
+catalog = "bolplanck"
+#catalog = "multidark"
 # Set rbins - Larger max distance means longer run time (from correlation calculations)
 #rbins = np.logspace(-1,1.2,15)
 rbins = np.logspace(-1,1.8,29)

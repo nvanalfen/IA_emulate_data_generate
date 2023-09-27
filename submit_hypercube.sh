@@ -18,5 +18,5 @@ conda activate ia_ml
 
 JOB=$(($SLURM_ARRAY_TASK_ID*1))
 
-python generate_training_data_hypercube.py $JOB 200 hypercube.npz
+python generate_training_data_hypercube.py $JOB 200 bolplanck_hypercube.npz
 
