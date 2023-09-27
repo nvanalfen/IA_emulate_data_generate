@@ -219,7 +219,7 @@ rbin_centers = (rbins[:-1]+rbins[1:])/2.0
 hypercube = np.load(hypercube_path, allow_pickle=True)
 hypercube_keys = hypercube["keys"]
 hypercube_params = hypercube["hypercube"]
-output_dir = "hypercube_data"
+output_dir = "bolplanck_hypercube_data"
 
 ############################################################################################################################
 
