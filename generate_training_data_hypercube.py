@@ -164,9 +164,17 @@ def generate_training_data(model, rbins, keys, hypercube, job, max_jobs, halocat
     values = hypercube[start:end]
 
     start = time.time()
-    ind = 0
 
-    for row in values:
+    start_point = 0
+    if os.path.exists( os.path.join( output_dir, f"inputs_{suffix}.npy" ) ):
+        inputs = np.load( os.path.join( output_dir, f"inputs_{suffix}.npy" ) ).tolist()
+        outputs = np.load( os.path.join( output_dir, f"outputs_{suffix}.npy" ) ).tolist()
+        start_point = len(inputs)
+        print("Loaded existing data")
+
+    ind = len(inputs)
+
+    for row in values[start_point:]:
 
         # Adjust model params
         for i in range(len(keys)):
