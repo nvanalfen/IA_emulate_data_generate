@@ -220,8 +220,8 @@ constant = True
 catalog = "bolplanck"
 #catalog = "multidark"
 # Set rbins - Larger max distance means longer run time (from correlation calculations)
-#rbins = np.logspace(-1,1.2,15)
-rbins = np.logspace(-1,1.8,29)
+rbins = np.logspace(-1,1.2,15)
+#rbins = np.logspace(-1,1.8,29)
 rbin_centers = (rbins[:-1]+rbins[1:])/2.0
 
 hypercube = np.load(hypercube_path, allow_pickle=True)
