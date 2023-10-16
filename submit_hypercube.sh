@@ -15,7 +15,6 @@
 #module load discovery anaconda3/3.7
 source /home/nvanalfen/miniconda3/bin/activate
 conda activate ia_ml
-
 JOB=$(($SLURM_ARRAY_TASK_ID+0))
 
 python generate_training_data_hypercube.py $JOB 50 bolplanck_hypercube.npz
