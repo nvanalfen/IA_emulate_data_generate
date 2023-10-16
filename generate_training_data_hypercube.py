@@ -173,6 +173,7 @@ def generate_training_data(model, rbins, keys, hypercube, job, max_jobs, halocat
         print("Loaded existing data")
 
     ind = len(inputs)
+    max_attempts = 5        # Maximum number of times to build a model without nans before giving up and moving on
 
     for row in values[start_point:]:
 
@@ -183,10 +184,18 @@ def generate_training_data(model, rbins, keys, hypercube, job, max_jobs, halocat
         # Repopulate and sample
         for i in range(inner_runs):
             try:
-                model.mock.populate()
+                repeat = True
+                attempt = 0
 
-                # Calculate correlations
-                results = generate_correlations_parallel(model, rbins, halocat)
+                while repeat and attempt < max_attempts:
+                    model.mock.populate()
+
+                    # Calculate correlations
+                    results = generate_correlations_parallel(model, rbins, halocat)
+                    attempt += 1
+
+                    # Check for nans
+                    repeat = ( any( np.isnan(results[0]) ) or any( np.isnan(results[1]) ) or any( np.isnan(results[2]) ) )
 
                 inputs.append( row )
                 outputs.append( results )
