@@ -228,8 +228,6 @@ def generate_training_data(model, rbins, job, max_jobs, Npts, halocat, inner_run
 
     for i in range(len(logMmin))[start_point:]:
 
-        print(f"{i} - {logMmin[i]}")
-
         # Adjust model params
         for key in keys:
             model.param_dict[key] = params[key][i]
