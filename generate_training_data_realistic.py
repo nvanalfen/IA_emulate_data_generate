@@ -163,7 +163,7 @@ def draw_uniform_params(logMmin, opt_params={}, rmse={}, fit_func=None):
     logM0 = np.random.uniform(logM0_means-logM0_rmse, logM0_means+logM0_rmse)
     
     logM1_means = fit_func( logMmin, *opt_params["logM1"] )
-    logM1_rmse = rmse["logM0"]
+    logM1_rmse = rmse["logM1"]
     logM1 = np.random.uniform(logM1_means-logM1_rmse, logM1_means+logM1_rmse)
     
     sigma_logM_means = fit_func( logMmin, *opt_params["sigma_logM"] )
