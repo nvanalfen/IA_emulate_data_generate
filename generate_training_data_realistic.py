@@ -197,17 +197,17 @@ def generate_training_data(model, rbins, job, max_jobs, Npts, halocat, inner_run
     outputs = []
 
     # Get the section of the full logMmin to run
-    span = int(np.ceil(Npts/max_jobs))
-    start = (job-1)*span
-    end = start+span
+    # span = int(np.ceil(Npts/max_jobs))
+    # start = (job-1)*span
+    # end = start+span
     
     # Get the right span of logM_min then draw values for the other 5 based on that
     logMmin_start = 11.0
     logMmin_stop = 15.0
-    logMmin = np.linspace(logMmin_start, logMmin_stop, Npts)[start:end]
+    logMmin = np.linspace(logMmin_start, logMmin_stop, Npts)[job-1::max_jobs]                   # This should give each job roughly the same number of points in each region
 
     # Get values
-    opt_params, rmse = get_calculated_params(rmse_factor=2)
+    opt_params, rmse = get_calculated_params(rmse_factor=4)
     params = draw_uniform_params(logMmin, opt_params=opt_params, rmse=rmse, fit_func=linear)
     params["logMmin"] = logMmin
 
